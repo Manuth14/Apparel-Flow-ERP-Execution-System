@@ -1,0 +1,107 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role
+  fullName     String
+  createdAt    DateTime @default(now())
+
+  orders       CuttingOrder[]
+  verifications VerificationLog[]
+}
+
+enum Role {
+  cutting_supervisor
+  cutting_verifier
+  sewing_supervisor
+}
+
+model Recipe {
+  id             String   @id @default(uuid())
+  recipeCode     String   @unique
+  name           String
+  category       String
+  stdFabricYards Float
+  wastageCap     Float
+
+  components     RecipeComponent[]
+  orders         CuttingOrder[]
+}
+
+model RecipeComponent {
+  id               String @id @default(uuid())
+  recipeId         String
+  recipe           Recipe @relation(fields: [recipeId], references: [id])
+  componentName    String
+  piecesPerGarment Int
+  imageUrl         String?
+
+  verificationItems VerificationItem[]
+}
+
+model CuttingOrder {
+  id              String        @id @default(uuid())
+  orderNo         String        @unique
+  recipeId        String
+  recipe          Recipe        @relation(fields: [recipeId], references: [id])
+  targetQty       Int
+  fabricRollId    String
+  actualFabricYds Float
+  status          OrderStatus   @default(CUTTING_IN_PROGRESS)
+  createdBy       String
+  creator         User          @relation(fields: [createdBy], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  items           VerificationItem[]
+  logs            VerificationLog[]
+}
+
+enum OrderStatus {
+  CUTTING_IN_PROGRESS
+  PENDING_VERIFICATION
+  VERIFIED
+  REJECTED
+}
+
+model VerificationItem {
+  id          String         @id @default(uuid())
+  orderId     String
+  order       CuttingOrder   @relation(fields: [orderId], references: [id])
+  componentId String
+  component   RecipeComponent @relation(fields: [componentId], references: [id])
+  expectedQty Int
+  actualQty   Int
+  status      TrafficStatus
+}
+
+enum TrafficStatus {
+  GREEN
+  YELLOW
+  RED
+}
+
+model VerificationLog {
+  id           String        @id @default(uuid())
+  orderId      String
+  order        CuttingOrder  @relation(fields: [orderId], references: [id])
+  verifierId   String
+  verifier     User          @relation(fields: [verifierId], references: [id])
+  decision     DecisionType
+  rejectionNote String?
+  wastagePct   Float
+  timestamp    DateTime      @default(now())
+}
+
+enum DecisionType {
+  APPROVED
+  REJECTED
+}
