@@ -33,16 +33,39 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    async function onSubmit(e: SubmitEvent) {
+    async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setError("");
         setLoading(true);
+
         try {
-            // TODO: replace with your auth call (NextAuth signIn / fetch to API)
-            await new Promise((r) => setTimeout(r, 900));
-            if (!email.includes("@")) throw new Error("Enter a valid work email.");
-            if (password.length < 8) throw new Error("Password must be at least 8 characters.");
-            window.location.href = "/dashboard";
+            // Oyaage backend API endpoint ekata fetch request eka yawannai me
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Invalid email or password.");
+            }
+
+            // Login eka success nam, user role eka anuwa adala page ekata redirect karanna
+            // Eg: Manager nam /manager, Supervisor nam /dashboard
+            if (data.role === "cutting_supervisor") {
+                window.location.href = "/supervisor";
+            } else if (data.role === "cutting_verifier") {
+                window.location.href = "/verifier";
+            }else if (data.role === "sewing_supervisor") {
+                window.location.href = "/sewing";
+            } else {
+                throw new Error(data.message || "Invalid verifier");
+            }
+
         } catch (err) {
             setError(err instanceof Error ? err.message : "Sign-in failed. Try again.");
         } finally {

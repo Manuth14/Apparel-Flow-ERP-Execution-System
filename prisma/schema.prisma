@@ -79,8 +79,10 @@ model VerificationItem {
   componentId String
   component   RecipeComponent @relation(fields: [componentId], references: [id])
   expectedQty Int
-  actualQty   Int
-  status      TrafficStatus
+  actualQty   Int?
+  status      TrafficStatus?
+
+  @@unique([orderId, componentId])
 }
 
 enum TrafficStatus {
