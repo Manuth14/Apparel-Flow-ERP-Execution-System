@@ -17,8 +17,6 @@ function secret() {
     return new TextEncoder().encode(s);
 }
 
-// Reads and verifies the JWT cookie. Returns null if missing or invalid.
-// Identity always comes from here, never from the request body.
 export async function getSession(): Promise<Session | null> {
     const token = (await cookies()).get(SESSION_COOKIE)?.value;
     if (!token) return null;

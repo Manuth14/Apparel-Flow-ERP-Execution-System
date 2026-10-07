@@ -6,8 +6,6 @@ import { evaluateGate, fabricWastagePct, itemStatus } from "@/lib/gatekeeper";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-// No request body is read: counts come from the database and the verifier
-// identity + timestamp come from the JWT session / server clock.
 export async function POST(_req: Request, { params }: Ctx) {
     try {
         const session = await requireRole("cutting_verifier"); // 401 / 403
@@ -24,7 +22,6 @@ export async function POST(_req: Request, { params }: Ctx) {
                 throw new ApiError(409, `Order is ${order.status}; only PENDING_VERIFICATION batches can be approved.`);
             }
 
-            // HARD STOP: re-evaluated from persisted counts (stored status is not trusted)
             const gate = evaluateGate(order.items);
             if (!gate.canApprove) {
                 const blocking = order.items
@@ -45,14 +42,12 @@ export async function POST(_req: Request, { params }: Ctx) {
 
             const wastagePct = fabricWastagePct(order.actualFabricYds, order.recipe.stdFabricYards, order.targetQty);
 
-            // Compare-and-set: only one concurrent approval can win
             const moved = await tx.cuttingOrder.updateMany({
                 where: { id, status: "PENDING_VERIFICATION" },
                 data: { status: "VERIFIED" },
             });
             if (moved.count !== 1) throw new ApiError(409, "Order was already processed.");
 
-            // Append-only audit record
             await tx.verificationLog.create({
                 data: {
                     orderId: id,

@@ -2,8 +2,6 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import Navbar from "@/components/Navbar";
 
-// Wraps every page inside app/(protected)/. The redirect here is UX only;
-// the real security boundary is requireRole() inside each API route.
 export default async function ProtectedLayout({
                                                   children,
                                               }: {

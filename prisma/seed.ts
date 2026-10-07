@@ -11,19 +11,39 @@ const prisma = new PrismaClient({ adapter })
 async function main() {
     console.log('Seeding database...')
 
-    // 1. Create a Supervisor User
     const supervisor = await prisma.user.upsert({
         where: { email: 'supervisor@apparelflow.com' },
         update: {},
         create: {
             email: 'supervisor@apparelflow.com',
-            passwordHash: 'hashed_password_placeholder',
+            passwordHash: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8.6bM5Yv5kq3p0y8X3m0g5uQ2m8Y2e',
             fullName: 'Kamal Perera',
             role: Role.cutting_supervisor,
         },
     })
 
-    // 2. Create Sample Recipes (Casual Blouse & Crop Top)
+    const verifier = await prisma.user.upsert({
+        where: { email: 'verifier@apparelflow.com' },
+        update: {},
+        create: {
+            email: 'verifier@apparelflow.com',
+            passwordHash: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8.6bM5Yv5kq3p0y8X3m0g5uQ2m8Y2e',
+            fullName: 'Nimal Perera',
+            role: Role.cutting_verifier,
+        },
+    })
+
+    const sewing = await prisma.user.upsert({
+        where: { email: 'sewing@apparelflow.com' },
+        update: {},
+        create: {
+            email: 'sewing@apparelflow.com',
+            passwordHash: '$2a$10$CwTycUXWue0Thq9StjUM0uJ8.6bM5Yv5kq3p0y8X3m0g5uQ2m8Y2e',
+            fullName: 'Sunil Perera',
+            role: Role.sewing_supervisor,
+        },
+    })
+
     const recipeBlouse = await prisma.recipe.upsert({
         where: { recipeCode: 'REC-BL01' },
         update: {},

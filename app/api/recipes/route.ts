@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const recipes = await prisma.recipe.findMany({
             include: {
-                components: true, // Recipe components (cut parts) ekka fetch karagannai
+                components: true,
             },
             orderBy: {
                 recipeCode: "asc",

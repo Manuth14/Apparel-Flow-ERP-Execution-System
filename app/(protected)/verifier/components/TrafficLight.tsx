@@ -6,7 +6,6 @@ const STYLE: Record<ItemStatus, { badge: string; dot: string }> = {
     RED: { badge: "border-red-300 bg-red-50 text-red-900", dot: "bg-red-600" },
 };
 
-// variance = actual - expected. Colour is never the only signal: the label is text too.
 export default function TrafficLight({
                                          status,
                                          variance,

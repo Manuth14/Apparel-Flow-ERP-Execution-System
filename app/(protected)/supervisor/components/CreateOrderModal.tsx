@@ -26,8 +26,6 @@ const WHOLE_NUMBER = /^\d+$/;
 const ROLL_ID = /^[A-Za-z0-9-]{3,30}$/;
 const FIELD_ORDER: Field[] = ["recipeId", "targetQty", "fabricRollId", "actualFabricYds"];
 
-// Strict guards: string input so we can tell "empty" apart from 0, and reject
-// negatives, decimals, exponents ("1e5") and letters. The server re-validates all of this.
 function validate(v: Values): Errors {
     const e: Errors = {};
 
@@ -78,7 +76,6 @@ export default function CreateOrderModal({
     const errors = useMemo(() => validate(values), [values]);
     const showError = (f: Field) => (submitted || touched[f]) && errors[f];
 
-    // Reset the form and load recipes every time the modal opens
     useEffect(() => {
         if (!isOpen) return;
         setValues(EMPTY);
@@ -100,7 +97,6 @@ export default function CreateOrderModal({
             .finally(() => setRecipesLoading(false));
     }, [isOpen]);
 
-    // Close on Escape
     useEffect(() => {
         if (!isOpen) return;
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && !loading && onClose();

@@ -9,7 +9,6 @@ export type SewingBatch = {
   actualFabricYds: number;
   recipe: { name: string; recipeCode: string; wastageCap: number };
 
-  // Immutable audit values written by the approval (never recomputed here)
   wastagePct: number | null;
   verifiedAt: string | null;
   verifierId: string | null;
@@ -24,10 +23,9 @@ export type SewingBatch = {
     expectedQty: number;
     actualQty: number | null;
     status: ItemStatus | null;
-    variance: number | null; // actual - expected
+    variance: number | null;
   }[];
 
-  // Every verifier decision on this batch, newest first (earlier rejections carry their reasons)
   trail: {
     id: string;
     decision: string;
