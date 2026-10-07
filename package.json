@@ -7,6 +7,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
     "db:generate": "prisma generate",
     "db:push": "prisma db push"
   },
@@ -23,12 +24,15 @@
   "devDependencies": {
     "@prisma/client": "^7.10.0",
     "@tailwindcss/postcss": "^4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "jest": "^30.5.2",
     "prisma": "^7.10.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-jest": "^29.4.14",
+    "typescript": "^5.9.3"
   }
 }
