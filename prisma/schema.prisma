@@ -58,13 +58,10 @@ model CuttingOrder {
   status          OrderStatus   @default(CUTTING_IN_PROGRESS)
   createdBy       String
   creator         User          @relation(fields: [createdBy], references: [id])
-<<<<<<< Updated upstream
-=======
 
   sewingStartedAt DateTime?
   sewingStartedBy String?
 
->>>>>>> Stashed changes
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -77,10 +74,7 @@ enum OrderStatus {
   PENDING_VERIFICATION
   VERIFIED
   REJECTED
-<<<<<<< Updated upstream
-=======
   IN_SEWING
->>>>>>> Stashed changes
 }
 
 model VerificationItem {
