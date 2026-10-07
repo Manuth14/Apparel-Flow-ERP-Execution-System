@@ -21,7 +21,6 @@ export async function POST(_req: Request, { params }: Ctx) {
                 select: { id: true },
             });
             if (already) throw new ApiError(409, "Sewing has already started for this batch.");
-            // Same answer for "missing" and "not verified": never confirm that an unverified order exists
             throw new ApiError(404, "Batch not found in the sewing queue.");
         }
 

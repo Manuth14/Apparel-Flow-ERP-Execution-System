@@ -29,7 +29,7 @@ export default function QueueTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[860px] text-left text-sm text-[#14202F]">
+      <table className="w-full min-w-215 text-left text-sm text-[#14202F]">
         <thead className="border-b border-[#E4E2DA] bg-[#FAFAF8] text-[#5B6676]">
           <tr>
             {headers.map((h, i) => (
