@@ -46,12 +46,12 @@ export default function VerificationTable({
                                     aria-label={`Actual count for ${r.componentName}`}
                                     aria-invalid={!!r.error}
                                     aria-describedby={r.error ? errId : undefined}
-                                    className={`w-32 rounded-lg border bg-white p-2.5 text-sm text-[#14202F] placeholder:text-[#5B6676] focus:outline-none focus:ring-4 focus:ring-[#E4B23C]/60 disabled:bg-[#F6F5F1] ${
-                                        r.error ? "border-red-700" : "border-[#6B7280] focus:border-[#1B2F4E]"
+                                    className={`w-32 rounded-lg border p-2.5 text-sm text-[#14202F] focus:outline-none focus:ring-4 focus:ring-[#E4B23C]/60 disabled:bg-[#F6F5F1] ${
+                                        r.error ? "border-red-700" : "focus:border-[#1B2F4E]"
                                     }`}
                                 />
                                 {r.error && (
-                                    <p id={errId} className="mt-1 max-w-[220px] text-sm text-red-800">
+                                    <p id={errId} className="mt-1 max-w-55 text-sm text-red-800">
                                         {r.error}
                                     </p>
                                 )}
