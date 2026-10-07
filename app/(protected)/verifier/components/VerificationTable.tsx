@@ -57,7 +57,7 @@ export default function VerificationTable({
                                 )}
                             </td>
                             <td className="px-4 py-3.5">
-                                <TrafficLight status={status} variance={variance} />
+                                <TrafficLight status={status} variance={variance}/>
                             </td>
                         </tr>
                     );
@@ -66,3 +66,4 @@ export default function VerificationTable({
             </table>
         </div>
     );
+}
