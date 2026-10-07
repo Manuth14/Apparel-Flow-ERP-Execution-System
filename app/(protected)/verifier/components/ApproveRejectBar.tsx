@@ -12,7 +12,7 @@ export default function ApproveRejectBar({
                                              onReject,
                                          }: {
     summary: { green: number; yellow: number; red: number; uncounted: number };
-    blockedReason: string | null; // null = approval allowed
+    blockedReason: string | null;
     canSave: boolean;
     busy: boolean;
     onSave: () => void;

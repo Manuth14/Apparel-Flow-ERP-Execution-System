@@ -4,8 +4,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/session";
 
-// Strict server-side validation (the client checks are UX only).
-// z.number() does not coerce, so "50", 50.5, -3 and NaN are all rejected.
 const CreateOrderSchema = z.object({
     recipeId: z.string().min(1),
     targetQty: z.number().int().min(1).max(100000),
@@ -16,7 +14,6 @@ const CreateOrderSchema = z.object({
     actualFabricYds: z.number().int().min(1).max(1000000),
 });
 
-// Shape the table expects (OrderRow). Flattens the recipe relation.
 type OrderWithRelations = Prisma.CuttingOrderGetPayload<{
     include: {
         recipe: { select: { name: true; recipeCode: true } };
@@ -41,7 +38,6 @@ function toRow(o: OrderWithRelations) {
 
 const orderInclude = {
     recipe: { select: { name: true, recipeCode: true } },
-    // latest rejection note only (relation name: adjust if your schema differs)
     logs: {
         where: { decision: "REJECTED" as const },
         orderBy: { timestamp: "desc" as const },
@@ -75,7 +71,6 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Recipe not found." }, { status: 404 });
         }
 
-        // Order number: count-based, retried if two requests collide on the unique orderNo
         for (let attempt = 0; attempt < 5; attempt++) {
             const count = await prisma.cuttingOrder.count();
             const orderNo = `CO-${2041 + count + attempt}`;
@@ -89,9 +84,8 @@ export async function POST(req: Request) {
                         fabricRollId,
                         actualFabricYds,
                         status: "PENDING_VERIFICATION",
-                        createdBy: session.userId, // from the JWT, never from the body
-                        // Multiplier engine: expected qty = pieces_per_garment x target_qty.
-                        // actualQty and status stay null until the verifier counts ("uncounted").
+                        createdBy: session.userId,
+
                         items: {
                             create: recipe.components.map((c) => ({
                                 componentId: c.id,
@@ -122,13 +116,11 @@ export async function GET() {
             return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
         }
 
-        // Sewing supervisors must never see cutting orders (they use /api/sewing/queue).
         if (session.role === "sewing_supervisor") {
             return NextResponse.json({ error: "Forbidden." }, { status: 403 });
         }
 
         const orders = await prisma.cuttingOrder.findMany({
-            // Verifier only sees the batches waiting at the QC station.
             where: session.role === "cutting_verifier" ? { status: "PENDING_VERIFICATION" } : undefined,
             include: orderInclude,
             orderBy: { createdAt: "desc" },

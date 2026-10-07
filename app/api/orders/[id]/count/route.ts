@@ -17,7 +17,6 @@ export async function POST(req: Request, { params }: Ctx) {
             const order = await tx.cuttingOrder.findUnique({ where: { id }, include: { items: true } });
             if (!order) throw new ApiError(404, "Order not found.");
 
-            // State machine: counts can only change while the batch is at the QC station
             if (order.status !== "PENDING_VERIFICATION") {
                 throw new ApiError(409, `Order is ${order.status}; counts can no longer be changed.`);
             }
@@ -34,7 +33,6 @@ export async function POST(req: Request, { params }: Ctx) {
                 const item = byId.get(c.itemId)!;
                 await tx.verificationItem.update({
                     where: { id: c.itemId },
-                    // The traffic light is derived here; a client-sent status is never used
                     data: { actualQty: c.actualQty, status: itemStatus(item.expectedQty, c.actualQty) },
                 });
             }

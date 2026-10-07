@@ -59,7 +59,6 @@ model CuttingOrder {
   createdBy       String
   creator         User          @relation(fields: [createdBy], references: [id])
 
-  // Sewing floor tracking fields added
   sewingStartedAt DateTime?
   sewingStartedBy String?
 
@@ -75,7 +74,7 @@ enum OrderStatus {
   PENDING_VERIFICATION
   VERIFIED
   REJECTED
-  IN_SEWING     // <--- Added for sewing assembly queue
+  IN_SEWING
 }
 
 model VerificationItem {

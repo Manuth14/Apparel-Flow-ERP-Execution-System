@@ -3,9 +3,9 @@ export type GateStatus = "green" | "yellow" | "red";
 export interface Component { name: string; unit: string; required: number; allocated: number }
 export interface CuttingOrder {
     id: string; style: string; recipe: string; qty: number; due: string;
-    wastageCap: number;    // % allowed by recipe
-    wastageActual: number; // % measured so far
-    components: Component[]; // first item is the main fabric
+    wastageCap: number;
+    wastageActual: number;
+    components: Component[];
 }
 export interface GateResult { status: GateStatus; reasons: string[] }
 

@@ -1,6 +1,3 @@
-// Pure functions only (no Prisma, no Next imports) so the UI and the API
-// evaluate the traffic lights with exactly the same rules.
-
 export type ItemStatus = "GREEN" | "YELLOW" | "RED";
 
 export type GateItem = { expectedQty: number; actualQty: number | null };

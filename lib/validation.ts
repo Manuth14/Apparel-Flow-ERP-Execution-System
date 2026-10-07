@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { ApiError } from "@/lib/errors";
 
-// z.number() never coerces, so "5", 5.5, -1 and NaN are all rejected.
 export const CountSchema = z.object({
   counts: z
     .array(
@@ -26,7 +25,6 @@ export const RejectSchema = z.object({
     .max(500, "Rejection reason is too long (max 500 characters)."),
 });
 
-/** Parses a request body and throws a 400 ApiError with the first message on failure. */
 export function parse<T>(schema: z.ZodType<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
