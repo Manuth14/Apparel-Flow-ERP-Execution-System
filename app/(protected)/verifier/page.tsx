@@ -9,6 +9,7 @@ export default function VerifierPage() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const pendingCount = orders.filter((o) => o.status === "PENDING_VERIFICATION").length;
 
   useEffect(() => {
     (async () => {
@@ -28,7 +29,7 @@ export default function VerifierPage() {
   return (
     <main className="space-y-6 p-4 sm:p-8">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-tight">
+        <h1 className="font-(family-name:--font-display) text-2xl font-bold tracking-tight">
           Verification Terminal
         </h1>
         <p className="text-sm text-[#5B6676]">
@@ -36,11 +37,14 @@ export default function VerifierPage() {
         </p>
       </div>
 
-      <section className="inline-block rounded-xl border border-amber-300 bg-amber-50 p-5">
+      <section
+          aria-label="Summary"
+          className="rounded-xl border border-amber-300 bg-amber-50 p-5">
         <p className="text-sm font-medium text-amber-800">Pending verification</p>
-        <p className="mt-1 font-[family-name:var(--font-display)] text-4xl font-bold text-amber-900">
-          {loading ? "–" : orders.length}
+        <p className="mt-1 font-(family-name:--font-display) text-4xl font-bold text-amber-900">
+          {loading ? "–" : pendingCount}
         </p>
+        <p className="mt-1 text-sm text-amber-800">Batches waiting at the QC station</p>
       </section>
 
       {error && (
@@ -51,7 +55,7 @@ export default function VerifierPage() {
 
       <section className="rounded-xl border border-[#E4E2DA] bg-white">
         <div className="border-b border-[#E4E2DA] p-4 sm:px-5">
-          <h2 className="font-[family-name:var(--font-display)] text-lg font-semibold">Batches at QC station</h2>
+          <h2 className="font-(family-name:--font-display) text-lg font-semibold">Batches at QC station</h2>
         </div>
         {loading ? (
           <div className="py-10 text-center text-[#5B6676]">Loading orders...</div>
