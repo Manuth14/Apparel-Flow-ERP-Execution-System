@@ -27,7 +27,6 @@ export type OrderDetail = {
   }[];
 };
 
-/** One row in the counting table (input text + parsed result) */
 export type ItemRow = {
   id: string;
   componentName: string;

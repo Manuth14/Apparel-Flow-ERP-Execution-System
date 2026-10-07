@@ -11,8 +11,6 @@ const include = {
   logs: { orderBy: { timestamp: "desc" as const } },
 };
 
-// QUERY ISOLATION: the status is a literal type, never user input. There is no
-// way for a URL param or request body to widen this WHERE clause.
 async function loadByStatus(status: "VERIFIED" | "IN_SEWING"): Promise<SewingBatch[]> {
   const orders = await prisma.cuttingOrder.findMany({
     where: { status },
@@ -20,7 +18,6 @@ async function loadByStatus(status: "VERIFIED" | "IN_SEWING"): Promise<SewingBat
     orderBy: { createdAt: "desc" },
   });
 
-  // Resolve verifier / sewing starter names without relying on a relation name
   const userIds = new Set<string>();
   for (const o of orders) {
     for (const l of o.logs) userIds.add(l.verifierId);
@@ -33,7 +30,7 @@ async function loadByStatus(status: "VERIFIED" | "IN_SEWING"): Promise<SewingBat
   const nameOf = (id: string | null) => (id ? (users.find((u) => u.id === id)?.fullName ?? "Unknown") : null);
 
   const batches: SewingBatch[] = orders.map((o) => {
-    // logs are newest first, so this is the latest approval
+
     const approval = o.logs.find((l) => l.decision === "APPROVED") ?? null;
 
     return {

@@ -11,31 +11,6 @@ const ROLE_HOME: Record<Role, string> = {
   sewing_supervisor: "/sewing",
 };
 
-// Demo accounts: must match the users you create in prisma/seed.ts
-const DEMO_ACCOUNTS = [
-  {
-    role: "cutting_supervisor" as Role,
-    label: "Cutting Supervisor",
-    desc: "Creates cutting orders and logs fabric",
-    email: "supervisor@demo.com",
-    password: "Demo@1234",
-  },
-  {
-    role: "cutting_verifier" as Role,
-    label: "Cutting Verifier",
-    desc: "Counts pieces, approves or rejects batches",
-    email: "verifier@demo.com",
-    password: "Demo@1234",
-  },
-  {
-    role: "sewing_supervisor" as Role,
-    label: "Sewing Supervisor",
-    desc: "Receives verified batches, starts sewing",
-    email: "sewing@demo.com",
-    password: "Demo@1234",
-  },
-];
-
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -75,13 +50,6 @@ export default function LoginPage() {
   function onSubmit(ev: FormEvent) {
     ev.preventDefault();
     signIn(email, password);
-  }
-
-  function useDemo(acc: (typeof DEMO_ACCOUNTS)[number]) {
-    setEmail(acc.email);
-    setPassword(acc.password);
-    setErrors({});
-    signIn(acc.email, acc.password);
   }
 
   const inputBase =

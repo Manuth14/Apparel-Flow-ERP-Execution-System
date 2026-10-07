@@ -12,7 +12,6 @@ export default function RejectDialog({
                                      }: {
     isOpen: boolean;
     onClose: () => void;
-    // Resolves to an error message on failure, or null on success
     onConfirm: (note: string) => Promise<string | null>;
 }) {
     const [note, setNote] = useState("");

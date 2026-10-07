@@ -16,7 +16,7 @@ export type OrderRow = {
     fabricRollId: string;
     actualFabricYds: number;
     status: OrderStatus;
-    rejectionNote: string | null; // only set when REJECTED
+    rejectionNote: string | null;
     createdAt: string; // ISO date
 };
 

@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { requireRole } from "@/lib/rbac";
 import { errorResponse } from "@/lib/errors";

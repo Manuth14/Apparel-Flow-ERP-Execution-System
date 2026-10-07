@@ -10,8 +10,6 @@ export async function POST(_req: Request, { params }: Ctx) {
         const session = await requireRole("sewing_supervisor"); // 401 / 403
         const { id } = await params;
 
-        // Compare-and-set: only a VERIFIED batch can move, and only once.
-        // Starter identity and time come from the session / server clock, not the body.
         const moved = await prisma.cuttingOrder.updateMany({
             where: { id, status: "VERIFIED" },
             data: { status: "IN_SEWING", sewingStartedAt: new Date(), sewingStartedBy: session.userId },

@@ -5,8 +5,6 @@ import { getSewingQueue } from "@/lib/sewing";
 
 export const dynamic = "force-dynamic";
 
-// The request URL and query string are deliberately never read:
-// nothing a client sends can change which orders this returns.
 export async function GET() {
     try {
         await requireRole("sewing_supervisor"); // 401 / 403

@@ -6,15 +6,6 @@ import { Bricolage_Grotesque, Figtree } from "next/font/google";
 const display = Bricolage_Grotesque({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-display" });
 const body = Figtree({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-body" });
 
-/*
- * Palette
- * denim   #1B2F4E  left panel, primary button
- * chalk   #F6F5F1  page background
- * thread  #E4B23C  topstitch accent (stitch lines, focus ring, one highlight)
- * ink     #14202F  text
- * slate   #5B6676  secondary text
- */
-
 const twill = {
     backgroundColor: "#1B2F4E",
     backgroundImage:
@@ -39,7 +30,6 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            // Oyaage backend API endpoint ekata fetch request eka yawannai me
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
@@ -54,8 +44,6 @@ export default function LoginPage() {
                 throw new Error(data.message || "Invalid email or password.");
             }
 
-            // Login eka success nam, user role eka anuwa adala page ekata redirect karanna
-            // Eg: Manager nam /manager, Supervisor nam /dashboard
             if (data.role === "cutting_supervisor") {
                 window.location.href = "/supervisor";
             } else if (data.role === "cutting_verifier") {
