@@ -35,7 +35,7 @@ export default function Navbar({fullName, role}: { fullName: string; role: strin
                 <div className="flex items-center gap-4">
                     <div className="text-right">
                         <p className="text-lg font-semibold text-slate-900">{fullName}</p>
-                        <p className="text-xs font-medium text-blue-700">{ROLE_LABEL[role] ?? role}</p>
+                        <p className="text-xs font-medium text-blue-900">{ROLE_LABEL[role] ?? role}</p>
                     </div>
 
                     <button
