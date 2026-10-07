@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 "use client";
 
 import { itemStatus } from "@/lib/gatekeeper";
@@ -68,5 +66,3 @@ export default function VerificationTable({
             </table>
         </div>
     );
-}
->>>>>>> Stashed changes
