@@ -23,9 +23,9 @@ ApparelFlow is an enterprise resource planning (ERP) system built for apparel ma
 ## 3. Demo Credentials
 | Role | Email | Password |
 |---|---|---|
-| **Cutting Supervisor** | `cutting.sup@apparelflow.com` | `password123` |
-| **Cutting Verifier** | `verifier@apparelflow.com` | `password123` |
-| **Sewing Supervisor** | `sewing.sup@apparelflow.com` | `password123` |
+| **Cutting Supervisor** | `cutting.sup@apparelflow.com` | `Demo@1234` |
+| **Cutting Verifier** | `verifier@apparelflow.com` | `Demo@1234` |
+| **Sewing Supervisor** | `sewing.sup@apparelflow.com` | `Demo@1234` |
 
 ## 4. Local Setup & Installation
 1. **Clone and install dependencies:**
