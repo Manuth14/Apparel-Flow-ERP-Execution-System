@@ -4,7 +4,8 @@ export type OrderStatus =
     | "CUTTING_IN_PROGRESS"
     | "PENDING_VERIFICATION"
     | "REJECTED"
-    | "VERIFIED";
+    | "VERIFIED"
+    | "IN_SEWING";
 
 export type OrderRow = {
     id: string;
@@ -24,6 +25,7 @@ export const STATUS_LABEL: Record<OrderStatus, string> = {
     PENDING_VERIFICATION: "Pending verification",
     REJECTED: "Rejected",
     VERIFIED: "Verified",
+    IN_SEWING: "In sewing",
 };
 
 const STATUS_STYLE: Record<OrderStatus, { badge: string; dot: string }> = {
@@ -42,6 +44,10 @@ const STATUS_STYLE: Record<OrderStatus, { badge: string; dot: string }> = {
     VERIFIED: {
         badge: "border-emerald-300 bg-emerald-50 text-emerald-900",
         dot: "bg-emerald-600",
+    },
+    IN_SEWING: {
+        badge: "border-blue-300 bg-blue-50 text-blue-900",
+        dot: "bg-blue-600",
     },
 };
 
