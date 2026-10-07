@@ -8,13 +8,10 @@ import type { ItemRow, OrderDetail } from "../components/types";
 import ApproveRejectBar from "@/app/(protected)/verifier/components/ApproveRejectBar";
 import VerificationTable from "@/app/(protected)/verifier/components/VerificationTable";
 import RejectDialog from "@/app/(protected)/verifier/components/RejectDialog";
+import {fmtDateTime} from "@/lib/format";
 
 const WHOLE = /^\d+$/;
 const MAX_COUNT = 1000000;
-
-function fmtDate(iso: string) {
-    return new Date(iso).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }) + " UTC";
-}
 
 export default function VerificationTerminalPage() {
     const { orderId } = useParams<{ orderId: string }>();
@@ -191,7 +188,7 @@ export default function VerificationTerminalPage() {
                     <ul className="mt-3 space-y-2 text-sm">
                         {order.logs.map((l) => (
                             <li key={l.id} className="rounded-lg border border-[#EEECE5] bg-[#FAFAF8] p-3">
-                                <span className="font-semibold">{l.decision}</span> by {l.verifierName} · {fmtDate(l.timestamp)}
+                                <span className="font-semibold">{l.decision}</span> by {l.verifierName} · {fmtDateTime(l.timestamp)}
                                 {l.rejectionNote && <p className="mt-1 text-red-900">Reason: {l.rejectionNote}</p>}
                             </li>
                         ))}

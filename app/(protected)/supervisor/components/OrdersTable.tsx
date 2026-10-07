@@ -1,5 +1,7 @@
 "use client";
 
+import {fmtDateTime} from "@/lib/format";
+
 export type OrderStatus =
     | "CUTTING_IN_PROGRESS"
     | "PENDING_VERIFICATION"
@@ -66,15 +68,6 @@ function OrderStatusBadge({ status }: { status: OrderStatus }) {
     );
 }
 
-function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        timeZone: "UTC",
-    });
-}
-
 const HEADERS = [
     "Order",
     "Recipe",
@@ -89,10 +82,12 @@ const HEADERS = [
 export default function OrdersTable({
                                         orders,
                                         onSelect,
+                                        onResubmit,
                                         emptyMessage = "No orders match this filter.",
                                     }: {
     orders: OrderRow[];
     onSelect?: (order: OrderRow) => void;
+    onResubmit?: () => void;
     emptyMessage?: string;
 }) {
     return (
@@ -141,9 +136,35 @@ export default function OrdersTable({
                                 )}
                             </td>
 
-                            <td className="px-4 py-3.5 whitespace-nowrap">{formatDate(o.createdAt)}</td>
+                            <td className="px-4 py-3.5 whitespace-nowrap">{fmtDateTime(o.createdAt)}</td>
 
                             <td className="px-4 py-3.5 text-right">
+
+                                {o.status === "REJECTED" && (
+                                    <button
+                                        type="button"
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
+                                            if (!confirm(`Resubmit order ${o.orderNo} for verification?`)) return;
+                                            try {
+                                                const res = await fetch(`/api/orders/${o.id}/resubmit`, {
+                                                    method: "POST",
+                                                });
+                                                const data = await res.json();
+                                                if (!res.ok) throw new Error(data.error || "Failed to resubmit");
+
+                                                if (onResubmit) onResubmit();
+                                                else window.location.reload();
+                                            } catch (err: any) {
+                                                alert(err.message);
+                                            }
+                                        }}
+                                        className={`rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 font-medium text-amber-900 hover:bg-amber-100 ${focus}`}
+                                    >
+                                        Resubmit
+                                    </button>
+                                )}
+
                                 {onSelect && (
                                     <button
                                         type="button"
